@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Rock-Paper-Scissors Game</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+	<header class="banner">
+		<h1>Rock-Paper-Scissors Game</h1>
+		<p>Try it now!</p>
+	</header>
+
+	<nav>
+		<ul>
+			<li><a href="">Home</a></li>
+			<li><a href="">About</a></li>
+		</ul>
+	</nav>
+
+	<main>
+		<section>
+			<h2>Make a throw</h2>
+			<p>Pick a number from this dropdown list</p>
+			<input id="uInput" list="items">
+			<datalist id="items">
+			</datalist>
+			<button type="button" onclick="gameResult()">Submit</button>
+			<p id="resultText"></p>
+		</section>
+	</main>
+	
+	<aside>
+		<h2>Rules</h2>
+		<p>Rock beats scissors</p>
+		<p>Scissors beats paper</p>
+		<p>Paper beats rock</p>
+		<p>Identical throws tie</p>
+	</aside>
+	
+	<footer>
+		<p>Footer section</p>
+	</footer>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"> </script>
+	
+	<script>
+		
+		var aItems = new Array();
+		aItems[0] = "Rock";
+		aItems[1] = "Paper";
+		aItems[2] = "Scissors";
+		
+		for (var i = 0; i < aItems.length; i++) {
+			$("#items").append("<option value='" + i + "'>" + aItems[i] + "</option>");
+		}
+	
+		function getMachineThrow() {
+			return Math.round(Math.random()*2);
+		}
+				
+		function getResultCode(uInput, mInput) {
+		// It returns 1 if the user won, 2 if the user lost, 3 if they tied, 4 if input is invalid.
+			var uWins = ((uInput==1 && mInput==0) || (uInput==2 && mInput==1) || (uInput==0 && mInput==2));
+			var mWins = ((uInput==0 && mInput==1) || (uInput==1 && mInput==2) || (uInput==2 && mInput==0));
+			if(uWins) {
+				return 1;
+			}
+			if(mWins) {
+				return 2;
+			}
+			if((uInput==0 || uInput==1 || uInput==2) && (uInput==mInput)) {
+				return 3;
+			} else {
+				return 4;
+			}
+		}
+		
+		function gameResult() {
+			var machineInput;
+			var userInput;
+			var resultCode;
+			machineInput = getMachineThrow();
+			if (isNaN($("#uInput").val()) || $("#uInput").val()=="" || $("#uInput").val()==undefined) {
+				resultCode = 4;
+			} else {
+				userInput = Math.round($("#uInput").val());
+				resultCode = getResultCode(userInput,machineInput);
+			}
+			switch (resultCode) {
+				case 1: document.getElementById("resultText").innerHTML="You won! You chose " + aItems[userInput] + ", this program selected " + aItems[machineInput] + ".";
+						break;
+				case 2: document.getElementById("resultText").innerHTML="This program won. You chose " + aItems[userInput] + ", the program selected " + aItems[machineInput] + ".";
+						break;
+				case 3: document.getElementById("resultText").innerHTML="It is a tie. You chose " + aItems[userInput] + ", the program selected " + aItems[machineInput] + " too.";
+						break;
+				default: document.getElementById("resultText").innerHTML="Invalid input.";
+			}
+		}
+		
+	</script>
+	
+</body>
+
+</html>
