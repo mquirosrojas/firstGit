@@ -67,16 +67,28 @@
 		// It returns 1 if the user won, 2 if the user lost, 3 if they tied, 4 if input is invalid.
 			var uWins = ((uInput==1 && mInput==0) || (uInput==2 && mInput==1) || (uInput==0 && mInput==2));
 			var mWins = ((uInput==0 && mInput==1) || (uInput==1 && mInput==2) || (uInput==2 && mInput==0));
+			var nobodyWins = ((uInput==0 || uInput==1 || uInput==2) && (uInput==mInput));
 			if(uWins) {
 				return 1;
-			}
-			if(mWins) {
+			} else if(mWins) {
 				return 2;
-			}
-			if((uInput==0 || uInput==1 || uInput==2) && (uInput==mInput)) {
+			} else if(nobodyWins) {
 				return 3;
 			} else {
 				return 4;
+			}
+		}
+		
+		function validInput() {
+			var userInput = $("#uInput").val();
+			if (isNaN(userInput) || userInput==null || userInput=="" || userInput==undefined) {
+		  		alert("Invalid input!");
+		  		return false;
+			} else if (userInput!=0 && userInput!=1 && userInput!=2) {
+				alert("Invalid input!");
+		  		return false;
+			} else {
+				return true;
 			}
 		}
 		
@@ -85,7 +97,7 @@
 			var userInput;
 			var resultCode;
 			machineInput = getMachineThrow();
-			if (isNaN($("#uInput").val()) || $("#uInput").val()=="" || $("#uInput").val()==undefined) {
+			if (!validInput()) {
 				resultCode = 4;
 			} else {
 				userInput = Math.round($("#uInput").val());
